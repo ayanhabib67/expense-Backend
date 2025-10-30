@@ -5,15 +5,13 @@ import express from "express"
 import cors from "cors"
 import mongoose, { startSession } from "mongoose"
 import jwd from "jsonwebtoken"
-import authMiddleware from "./middleware/auth.js"
-import bcrypt from "bcryptjs"
 
-// import UserModel from "./models/Usermodel.js"
-import Expmodel from "./models/ExpenseModel.js"
+import bcrypt from "bcryptjs"
 import UserModel from "./models/Usermodel.js"
-import incomeModel from "./models/ExpenseModel.js"
-// import incomeModel from "./models/IncomeModel.js"
-// import UserModel from "./models/Usermodel.js"
+import incomeModel from "./models/IncomeModel.js"
+import expModel from "./models/ExpenseModel.js"
+
+
 
 
 
@@ -179,7 +177,25 @@ app.post("/createIncome", async (request, response) => {
   });
   
 
-
+  app.post("/createexpence", async (request, response) => {
+    try {
+      console.log("Incoming data:", request.body);
+  
+      const newIncome = new expModel(request.body);
+      await newIncome.save(); 
+  
+      response.json({
+        message: "Income created successfully!",
+        status: true,
+        data: newIncome,
+      });
+    } catch (error) {
+      response.json({
+        message: error.message,
+        status: false,
+      });
+    }
+  });
 
 
 
@@ -216,6 +232,26 @@ app.post("/createIncome", async (request, response) => {
   });
   
 
+  app.post("/getexpence", async (req, res) => {
+    try {
+      const { userId } = req.body; 
+  
+      console.log("User ID from frontend:", userId);
+  
+      const incomes = await expModel.find({ userId });
+  
+      res.json({
+        message: "Incomes fetched successfully",
+        status: true,
+        data: incomes,
+      });
+    } catch (error) {
+      res.json({
+        message: error.message,
+        status: false,
+      });
+    }
+  });
 
 
 app.listen(PORT, () => {

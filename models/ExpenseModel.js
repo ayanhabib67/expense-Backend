@@ -33,7 +33,7 @@
 
 import mongoose from "mongoose";
 
-const incSchema = new mongoose.Schema({
+const secma = new mongoose.Schema({
   category: String,
   incTitle: String,
   amount: Number,
@@ -41,5 +41,5 @@ const incSchema = new mongoose.Schema({
   userId: String, // ✅ lowercase same as frontend
 });
 
-const incomeModel = mongoose.model("income", incSchema);
-export default incomeModel;
+const expModel = mongoose.model("expence", secma);
+export default expModel;
